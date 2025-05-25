@@ -8,7 +8,7 @@ MATLAB Version: R2018b
 
 main.m: Main script to run the DTI-RME model.
 
-datasets/: Directory containing the datasets for training and testing.
+datasets.zip: ZIP containing the datasets for training and testing.
 
 🚀 How to Run the Program
 
