@@ -2,7 +2,7 @@ clear
 MU = 0.005;GAMMA=0.002;
 %% load adjacency matrix
 dataname = 'e';
-cv_type = 'CVD';
+cv_type = 'CVP';
 [y,~,~] = loadtabfile(['D:' dataname '_admat_dgc.txt']);
 
 seed = 2024;
@@ -38,6 +38,9 @@ for fold=1:nfolds
         mat = process_kernel(mat);
         K1(:,:,i) = Knormalized(mat);
     end
+    K1(:,:,3+1) = kernel_gip(y_train,1,0.5);
+    K1(:,:,3+2) = Knormalized( kernel_cosine(y_train,1,MU,GAMMA) );
+    K1(:,:,3+3) = Knormalized( kernel_corr(y_train,1,MU,GAMMA) );
     k2_paths = {['D:/' dataname '_simmat_drugs_simcomp.txt'],...
         ['D:/' dataname '_simmat_drugs_sider.txt'],...
         };
@@ -51,15 +54,17 @@ for fold=1:nfolds
     load(['D:/' dataname '_Drug_MACCS_fingerprint.mat']);
     K2(:,:,i+1) = Knormalized( kernel_gip(Drug_MACCS_fingerprint,1, gamma_fp) );
     gamma=0.5;
-    
+    K2(:,:,3+1) = Knormalized( kernel_gip(y_train,2,gamma) );
+    K2(:,:,3+2) = Knormalized( kernel_cosine(y_train,2,MU,GAMMA) );
+    K2(:,:,3+3) = Knormalized( kernel_corr(y_train,2,MU,GAMMA) );
     %% DTI_RME
-	lambda_1 = 0.0625;
+    lambda_1 = 0.03125;
     lambda_2 = 1;
-	lambda_3 = 2;
-	lambda_4 = 100;
-	sita = 0.125;
+    lambda_3 = 0.125;
+    lambda_4 = 100;
+    sita = 0.125;
     k = 80;
-    [pre] = DTI_RME(K1,K2,y_train,sita,lambda_4,lambda_2,lambda_1,k,lambda_3);
+    [pre] = DTI_RME(K1,K2,y_train,sita,lambda_1,lambda_2,lambda_4,k,lambda_3);
     %% evaluate predictions
     yy=y;
     y_true = yy(test_idx);
