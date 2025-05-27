@@ -18,6 +18,15 @@ In the MATLAB command window, run:
 
 main.m
 
+| Parameter | Default | Description                                                                                                                   |
+| --------- | ------- | ----------------------------------------------------------------------------------------------------------------------------- |
+| `seed`    | 2024    | Random seed to ensure reproducibility of cross-validation splits and results.                                                 |
+| `nfolds`  | 5       | Number of folds for cross-validation; the dataset is split into 5 parts, with each part used as the test set once.            |
+| `nruns`   | 20      | Number of runs (currently unused in the script, but can be extended for repeated experiments).                                |
+| `ratio`   | 5       | Ratio of negative to positive samples in the test set; negative samples are downsampled accordingly.                          |
+| `cv_type` | 'CVD'   | Type of cross-validation. `'CVD'` indicates cross-validation on drugs (CVP,CVT). |
+
+
 The script will output predicted drug-target interaction scores.
 
 Check AUC,AUPR results printed at the end to compare with those reported in the paper.
